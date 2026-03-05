@@ -1,0 +1,103 @@
+/* Traffic Capture Styles */
+.traffic-capture-container {
+    padding: 20px;
+    background: #1e1e1e;
+    border-radius: 8px;
+    color: #fff;
+}
+
+.capture-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.capture-header h2 {
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.status-badge {
+    font-size: 0.8em;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.status-badge.connected {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-badge.disconnected {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-start,
+.btn-stop {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-start {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-stop {
+    background-color: #dc3545;
+    color: white;
+}
+
+.packet-list {
+    list-style: none;
+    padding: 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.packet-item {
+    background: #2a2a2a;
+    border-bottom: 1px solid #333;
+    padding: 8px;
+    display: flex;
+    gap: 10px;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.packet-item .protocol {
+    color: #61dafb;
+    width: 50px;
+    font-weight: bold;
+}
+
+.packet-item .source {
+    color: #ffc107;
+}
+
+.packet-item .destination {
+    color: #4caf50;
+}
+
+.packet-item .arrow {
+    color: #888;
+}
+
+.packet-item .size {
+    color: #aaa;
+    margin-left: auto;
+}
+
+.no-data {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+}

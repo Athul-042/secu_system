@@ -1,0 +1,252 @@
+.secure-vault-container {
+    padding: 2rem;
+    color: #e2e8f0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.vault-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.vault-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(to right, #60a5fa, #3b82f6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.vault-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.vault-card {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.control-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+button {
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-trusted {
+    background: rgba(16, 185, 129, 0.2);
+    color: #34d399;
+    border: 1px solid #059669;
+}
+
+.btn-trusted:hover:not(:disabled) {
+    background: rgba(16, 185, 129, 0.3);
+}
+
+.btn-malicious {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid #dc2626;
+}
+
+.btn-malicious:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+.btn-reset {
+    background: rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+}
+
+.btn-reset:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.status-display {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    text-align: center;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.status-badge.idle {
+    background: #475569;
+    color: white;
+}
+
+.status-badge.verifying {
+    background: #f59e0b;
+    color: black;
+    animation: pulse 1.5s infinite;
+}
+
+.status-badge.granted {
+    background: #10b981;
+    color: white;
+}
+
+.status-badge.denied {
+    background: #ef4444;
+    color: white;
+}
+
+.terminal-group {
+    margin-bottom: 1.5rem;
+}
+
+.terminal-label {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+}
+
+.terminal-screen {
+    background: #0f172a;
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    min-height: 80px;
+    word-break: break-all;
+    border: 1px solid #334155;
+}
+
+.terminal-screen.locked {
+    color: #f59e0b;
+}
+
+.terminal-screen.unlocked {
+    color: #10b981;
+    border-color: #059669;
+}
+
+.logs-container {
+    height: 200px;
+    overflow-y: auto;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+}
+
+.log-entry {
+    padding: 0.25rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Patent Reference */
+.patent-ref {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: -10px;
+    font-style: italic;
+}
+
+/* Consensus Panel */
+.consensus-panel {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    margin-top: 15px;
+}
+
+.consensus-panel h3 {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: #ffd700;
+    /* Gold */
+}
+
+.admin-grid {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-vote {
+    background: #333;
+    border: 1px solid #555;
+    color: white;
+    padding: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+}
+
+.btn-vote:hover {
+    background: #444;
+}
+
+.btn-vote.voted {
+    background: #2e7d32;
+    /* Green */
+    border-color: #4caf50;
+    cursor: default;
+}
+
+.consensus-status {
+    font-size: 0.9rem;
+    color: #aaa;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.btn-recovery {
+    background: #d32f2f;
+    /* Red */
+    color: white;
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid #b71c1c;
+}
+
+.btn-recovery:hover {
+    background: #b71c1c;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.6;
+    }
+}
