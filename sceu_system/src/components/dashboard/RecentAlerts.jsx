@@ -3,7 +3,6 @@ import { useState } from 'react';
 function RecentAlerts({ alerts = [] }) {
     const [refreshing, setRefreshing] = useState(false);
 
-    // Mock data if no alerts provided
     const defaultAlerts = [
         { title: "Inbound Attack Prevented", desc: "Brute force attempt from Seoul, KR.", type: "critical", time: "2m ago" },
         { title: "Weak Wi-Fi Detected", desc: "Current network lacks WPA3 encryption.", type: "warning", time: "1h ago" },
@@ -14,17 +13,28 @@ function RecentAlerts({ alerts = [] }) {
 
     const handleRefresh = () => {
         setRefreshing(true);
-        // Simulate refresh
-        setTimeout(() => {
-            setRefreshing(false);
-            // In a real app, this might re-fetch data
-        }, 1000);
+        setTimeout(() => setRefreshing(false), 1000);
     };
 
     return (
         <div className="dashboard-card">
             <div className="card-header">
-                <span className="card-title">Intelligence Feed</span>
+                <span className="card-title">
+                    Intelligence Feed
+                    {alerts.length > 0 && (
+                        <span style={{
+                            marginLeft: '8px',
+                            background: '#ef4444',
+                            color: '#fff',
+                            borderRadius: '12px',
+                            padding: '1px 8px',
+                            fontSize: '0.7rem',
+                            fontWeight: '700'
+                        }}>
+                            {alerts.length}
+                        </span>
+                    )}
+                </span>
                 <span
                     onClick={handleRefresh}
                     style={{
@@ -38,7 +48,7 @@ function RecentAlerts({ alerts = [] }) {
                 </span>
             </div>
 
-            <ul className="alerts-list">
+            <ul className="alerts-list" style={{ maxHeight: '300px', overflowY: 'auto', paddingRight: '4px' }}>
                 {displayAlerts.map((alert, index) => (
                     <li key={index} className="alert-item">
                         <div className={`alert-icon ${alert.type}`}>

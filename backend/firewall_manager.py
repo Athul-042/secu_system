@@ -7,23 +7,25 @@ WHITELIST = [
     "127.0.0.1",        # Localhost
     "0.0.0.0",          # All interfaces
     "255.255.255.255",  # Broadcast
-    "192.168.1.1",      # Common Router IP (Adjust if needed)
+    "192.168.1.1",      # Common Router IP
     "10.0.0.1",         # Common Router IP
     "8.8.8.8",          # Google DNS
     "8.8.4.4",          # Google DNS
     "1.1.1.1",          # Cloudflare DNS
 ]
 
-# Track blocked IPs to avoid redundant rules
-blocked_ips = set()
-lock = threading.Lock()
-
 def is_safe(ip):
     if ip in WHITELIST:
         return True
-    # Don't block local network traffic universally, but for this demo/test we might want to block a specific attacker
-    # For safety, let's say we don't block anything starting with 192.168. (unless user wants to test with another pc)
-    # For now, simplistic check:
+    # Never block private/local network ranges
+    if ip.startswith("10."):          return True   # Private class A (college/office nets)
+    if ip.startswith("192.168."):     return True   # Private class C
+    if ip.startswith("172."):                       # Private class B (172.16 - 172.31)
+        second = int(ip.split(".")[1])
+        if 16 <= second <= 31:        return True
+    if ip.startswith("224."):         return True   # Multicast
+    if ip.startswith("239."):         return True   # Multicast
+    if ip.startswith("169.254."):     return True   # Link-local
     return False
 
 def block_ip(ip):

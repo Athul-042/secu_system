@@ -17,10 +17,11 @@ function TrafficMonitor() {
         }
 
         // Group by time (e.g., last 10 entries or by minute)
-        // For simplicity, let's just show the last 20 data points 'size' as 'load'
         return trafficData.slice(-20).map(item => ({
-            name: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-            load: item.size
+            name: new Date(item.timestamp * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+            load: item.size,
+            is_anomaly: item.is_anomaly,
+            attack_type: item.attack_type
         }));
     }, [trafficData]);
 
@@ -48,18 +49,45 @@ function TrafficMonitor() {
                     >
                         <defs>
                             <linearGradient id="colorLoad" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
+                                <stop offset="5%" stopColor="var(--primary)" stopOpacity={0.8} />
+                                <stop offset="95%" stopColor="var(--primary)" stopOpacity={0} />
                             </linearGradient>
                         </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
-                        <XAxis dataKey="name" stroke="#64748b" tick={{ fontSize: 12 }} interval="preserveStartEnd" />
-                        <YAxis stroke="#64748b" tick={{ fontSize: 12 }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                        <XAxis dataKey="name" stroke="var(--text-muted)" tick={{ fontSize: 10 }} />
+                        <YAxis stroke="var(--text-muted)" tick={{ fontSize: 10 }} />
                         <Tooltip
-                            contentStyle={{ backgroundColor: '#1e293b', borderColor: '#334155', color: '#f1f5f9' }}
-                            itemStyle={{ color: '#8884d8' }}
+                            content={({ active, payload }) => {
+                                if (active && payload && payload.length) {
+                                    const d = payload[0].payload;
+                                    return (
+                                        <div style={{ backgroundColor: 'rgba(15, 23, 42, 0.9)', border: '1px solid var(--glass-border)', padding: '10px', borderRadius: '8px', color: 'white' }}>
+                                            <p style={{ margin: 0, fontSize: '0.8rem' }}>Time: {d.name}</p>
+                                            <p style={{ margin: '4px 0', fontSize: '1rem', fontWeight: 'bold' }}>Load: {d.load} bytes</p>
+                                            {d.is_anomaly && (
+                                                <p style={{ margin: 0, color: '#ef4444', fontWeight: '800' }}>⚠️ ATTACK: {d.attack_type}</p>
+                                            )}
+                                        </div>
+                                    );
+                                }
+                                return null;
+                            }}
                         />
-                        <Area type="monotone" dataKey="load" stroke="#8884d8" fillOpacity={1} fill="url(#colorLoad)" />
+                        <Area 
+                            type="monotone" 
+                            dataKey="load" 
+                            stroke="var(--primary)" 
+                            strokeWidth={3} 
+                            fillOpacity={1} 
+                            fill="url(#colorLoad)"
+                            dot={(props) => {
+                                const { cx, cy, payload } = props;
+                                if (payload.is_anomaly) {
+                                    return <circle cx={cx} cy={cy} r={6} fill="#ef4444" stroke="white" strokeWidth={2} />;
+                                }
+                                return null;
+                            }}
+                        />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>

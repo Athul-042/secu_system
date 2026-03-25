@@ -1,0 +1,173 @@
+[
+  {
+    "timestamp": "2026-03-22T11:09:27.092597",
+    "source_ip": "10.11.12.25",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 1,
+    "total_bytes": 787,
+    "ports": [],
+    "avg_url_len": 38.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.4%)",
+    "ml_confidence": 99.4,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:27.208961",
+    "source_ip": "10.11.12.43",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 1,
+    "total_bytes": 787,
+    "ports": [],
+    "avg_url_len": 38.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.4%)",
+    "ml_confidence": 99.4,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:27.342325",
+    "source_ip": "10.11.14.17",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 1,
+    "total_bytes": 787,
+    "ports": [],
+    "avg_url_len": 38.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.4%)",
+    "ml_confidence": 99.4,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:28.010395",
+    "source_ip": "10.11.6.23",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 1,
+    "total_bytes": 787,
+    "ports": [],
+    "avg_url_len": 38.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.4%)",
+    "ml_confidence": 99.4,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:29.838060",
+    "source_ip": "10.11.7.174",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 2,
+    "total_bytes": 1574,
+    "ports": [],
+    "avg_url_len": 38.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.4%)",
+    "ml_confidence": 99.4,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:30.407318",
+    "source_ip": "10.11.7.41",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 1,
+    "total_bytes": 787,
+    "ports": [],
+    "avg_url_len": 38.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.4%)",
+    "ml_confidence": 99.4,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:30.933287",
+    "source_ip": "10.11.8.216",
+    "destinations": [
+      "23.48.226.24",
+      "23.48.226.11",
+      "172.16.1.1",
+      "142.251.221.131",
+      "151.101.66.133"
+    ],
+    "packet_count": 100,
+    "total_bytes": 38953,
+    "ports": [],
+    "avg_url_len": 18.9,
+    "rule_flags": [
+      "High request volume (100 packets)"
+    ],
+    "ml_result": "Attack (99.9%)",
+    "ml_confidence": 99.9,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:31.081706",
+    "source_ip": "10.11.8.64",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 1,
+    "total_bytes": 787,
+    "ports": [],
+    "avg_url_len": 38.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.4%)",
+    "ml_confidence": 99.4,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:31.747037",
+    "source_ip": "142.251.221.131",
+    "destinations": [
+      "10.11.8.216"
+    ],
+    "packet_count": 5,
+    "total_bytes": 4586,
+    "ports": [],
+    "avg_url_len": 0.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.8%)",
+    "ml_confidence": 99.8,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:31.863433",
+    "source_ip": "142.251.223.3",
+    "destinations": [
+      "10.230.181.80"
+    ],
+    "packet_count": 2,
+    "total_bytes": 554,
+    "ports": [],
+    "avg_url_len": 0.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.8%)",
+    "ml_confidence": 99.8,
+    "severity": "HIGH"
+  },
+  {
+    "timestamp": "2026-03-22T11:09:32.729707",
+    "source_ip": "23.41.121.106",
+    "destinations": [
+      "10.230.181.80"
+    ],
+    "packet_count": 1,
+    "total_bytes": 317,
+    "ports": [],
+    "avg_url_len": 0.0,
+    "rule_flags": [],
+    "ml_result": "Attack (99.8%)",
+    "ml_confidence": 99.8,
+    "severity": "HIGH"
+  }
+]

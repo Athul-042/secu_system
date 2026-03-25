@@ -8,22 +8,30 @@ export const useData = () => useContext(DataContext);
 export const DataProvider = ({ children }) => {
   const [trafficData, setTrafficData] = useState([]);
   const [features, setFeatures] = useState([]);
-  const [analysis, setAnalysis] = useState([]); // Anomalies
+  const [analysis, setAnalysis] = useState([]);
   const [stats, setStats] = useState(null);
   const [simulatedThreats, setSimulatedThreats] = useState([]);
 
+  // Live backend stats (Synced with app.py Point 1)
+  const [liveStats, setLiveStats] = useState({
+    total_packets: 0,
+    anomaly_count: 0,
+    blocked_count: 0,
+    safe_level: 100,
+    anomaly_rate: 0
+  });
+
+  const [backendAlerts, setBackendAlerts] = useState([]);
+
   useEffect(() => {
     if (trafficData.length > 0) {
-      // 1. Calculate Stats
       const currentStats = calculateStatistics(trafficData);
       setStats(currentStats);
 
-      // 2. Extract Features & Detect Anomalies
       const processed = extractFeatures(trafficData).map(f => {
         const anomalies = detectAnomalies({ ...f, size: f.requestSize });
         return { ...f, anomalies, isAnomaly: anomalies.length > 0 };
       });
-
       setFeatures(processed);
     }
   }, [trafficData]);
@@ -35,13 +43,13 @@ export const DataProvider = ({ children }) => {
     }
   }, [features]);
 
-  // Combine real anomalies with simulated ones
   const allAlerts = [
-    ...analysis.map(a => ({
+    ...backendAlerts.map(a => ({
       source: a.source,
-      type: 'critical',
-      desc: a.anomalies.join(', '),
-      time: new Date().toLocaleTimeString()
+      type: a.severity?.toLowerCase() || 'critical',
+      desc: `${a.attack_type || 'Attack'}: ${a.reason || 'Pattern Anomaly'} (${a.confidence}% confidence)`,
+      time: new Date().toLocaleTimeString(),
+      severity: a.severity
     })),
     ...simulatedThreats
   ];
@@ -50,12 +58,14 @@ export const DataProvider = ({ children }) => {
     <DataContext.Provider value={{
       trafficData, setTrafficData,
       features, setFeatures,
-      analysis, setAnalysis, // Real anomalies
-      patterns: analysis, // Alias for older components
-      traced: analysis, // Alias for older components
+      analysis, setAnalysis,
+      patterns: analysis,
+      traced: analysis,
       stats, setStats,
       simulatedThreats, setSimulatedThreats,
-      allAlerts
+      allAlerts,
+      liveStats, setLiveStats,
+      backendAlerts, setBackendAlerts
     }}>
       {children}
     </DataContext.Provider>

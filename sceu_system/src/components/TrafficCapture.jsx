@@ -1,42 +1,71 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './TrafficCapture.css';
 
-const socket = io('http://localhost:5000'); // Connect to Flask Backend
+const socket = io('http://localhost:5000', {
+  reconnectionDelay: 1000,
+  reconnectionAttempts: Infinity,
+  transports: ['websocket', 'polling']
+});
 
-function TrafficCapture({ onData, background = false }) {
+function TrafficCapture({ onData, onStats, onAlert, background = false }) {
   const [trafficData, setTrafficData] = useState([]);
-  // Auto-start if background is true
   const [isCapturing, setIsCapturing] = useState(background);
   const [isConnected, setIsConnected] = useState(false);
 
+  // Use refs so listeners always call the latest callbacks
+  // without needing to re-register on every render
+  const onDataRef  = useRef(onData);
+  const onStatsRef = useRef(onStats);
+  const onAlertRef = useRef(onAlert);
+  const trafficRef = useRef([]); // keeps latest trafficData without triggering renders
+  useEffect(() => { onDataRef.current  = onData;  }, [onData]);
+  useEffect(() => { onStatsRef.current = onStats; }, [onStats]);
+  useEffect(() => { onAlertRef.current = onAlert; }, [onAlert]);
+
   useEffect(() => {
-    socket.on('connect', () => {
+    const handleConnect = () => {
       console.log('Connected to Traffic Sniffer Backend');
       setIsConnected(true);
-    });
+    };
 
-    socket.on('disconnect', () => {
+    const handleDisconnect = () => {
       console.log('Backend Disconnected');
       setIsConnected(false);
-    });
+    };
 
-    socket.on('new_packet', (packet) => {
-      setTrafficData((prev) => {
-        const newData = [packet, ...prev].slice(0, 50); // Keep last 50 packets
-        if (onData) onData(newData);
-        return newData;
-      });
-    });
+    const handlePacket = (packet) => {
+      // Build new array via ref first — avoids calling another setter inside a setter
+      trafficRef.current = [packet, ...trafficRef.current].slice(0, 50);
+      setTrafficData(trafficRef.current);
+      if (onDataRef.current) onDataRef.current(trafficRef.current);
+      
+      // Point 9: Link anomalies to global feed
+      if (packet.is_anomaly && onAlertRef.current) {
+        onAlertRef.current(packet);
+      }
+    };
+
+    const handleStats = (stats) => {
+      if (onStatsRef.current) onStatsRef.current(stats);
+    };
+
+    socket.on('connect', handleConnect);
+    socket.on('disconnect', handleDisconnect);
+    socket.on('new_packet', handlePacket);
+    socket.on('stats_update', handleStats);
+
+    // If already connected when component mounts
+    if (socket.connected) setIsConnected(true);
 
     return () => {
-      socket.off('connect');
-      socket.off('new_packet');
-      socket.off('disconnect');
+      socket.off('connect', handleConnect);
+      socket.off('disconnect', handleDisconnect);
+      socket.off('new_packet', handlePacket);
+      socket.off('stats_update', handleStats);
     };
-  }, [onData]);
+  }, []); // Empty dependency — register listeners ONCE, never re-register
 
-  // Handle start/stop based on isCapturing state
   useEffect(() => {
     if (isCapturing && isConnected) {
       socket.emit('start_capture');
@@ -93,4 +122,3 @@ function TrafficCapture({ onData, background = false }) {
 }
 
 export default TrafficCapture;
-

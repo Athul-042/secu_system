@@ -9,16 +9,23 @@
 }
 
 .login-card {
-  background: rgba(30, 41, 59, 0.8);
-  backdrop-filter: blur(10px);
-  padding: 40px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  padding: 50px;
+  border-radius: 24px;
+  border: 1px solid var(--glass-border);
   text-align: center;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   z-index: 10;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  animation: fadeInDown 0.8s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .login-title {
@@ -40,18 +47,20 @@
 }
 
 .login-input {
-  background: rgba(15, 23, 42, 0.6);
-  border: 1px solid #334155;
-  padding: 12px 16px;
-  border-radius: 8px;
+  background: rgba(15, 23, 42, 0.4);
+  border: 1px solid var(--glass-border);
+  padding: 14px 20px;
+  border-radius: 12px;
   color: #fff;
   font-size: 1rem;
   outline: none;
-  transition: border-color 0.2s;
+  transition: all 0.3s ease;
 }
 
 .login-input:focus {
-  border-color: #3b82f6;
+  border-color: var(--primary);
+  background: rgba(15, 23, 42, 0.6);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .login-button {
@@ -93,41 +102,18 @@
 
 .particle {
   position: absolute;
-  background: rgba(59, 130, 246, 0.2);
+  background: var(--grad-primary);
+  filter: blur(80px);
   border-radius: 50%;
-  animation: float 20s infinite linear;
+  opacity: 0.15;
+  animation: float 25s infinite alternate ease-in-out;
 }
 
-.particle:nth-child(1) {
-  width: 100px;
-  height: 100px;
-  top: 10%;
-  left: 10%;
-  animation-duration: 25s;
-}
-
-.particle:nth-child(2) {
-  width: 150px;
-  height: 150px;
-  top: 60%;
-  left: 80%;
-  animation-duration: 30s;
-}
-
-.particle:nth-child(3) {
-  width: 50px;
-  height: 50px;
-  top: 40%;
-  left: 40%;
-  animation-duration: 15s;
-}
+.particle:nth-child(1) { width: 400px; height: 400px; top: -100px; left: -100px; }
+.particle:nth-child(2) { width: 500px; height: 500px; bottom: -150px; right: -150px; animation-duration: 35s; }
+.particle:nth-child(3) { width: 300px; height: 300px; top: 30%; right: 20%; animation-duration: 20s; }
 
 @keyframes float {
-  0% {
-    transform: translate(0, 0) rotate(0deg);
-  }
-
-  100% {
-    transform: translate(100px, 100px) rotate(360deg);
-  }
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(50px, 50px) scale(1.1); }
 }
