@@ -1,7 +1,15 @@
 import { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:5000');
+const getBackendUrl = () => {
+    if (window.electronAPI?.getBackendUrl) {
+        return window.electronAPI.getBackendUrl();
+    }
+    return 'http://localhost:5000';
+};
+
+const BACKEND_URL = getBackendUrl();
+const socket = io(BACKEND_URL);
 
 function HttpAnalyzer() {
     const [csvPath, setCsvPath] = useState('data/http_capture.csv');
@@ -28,7 +36,7 @@ function HttpAnalyzer() {
         setDone(false);
         setRunning(true);
         try {
-            await fetch('http://localhost:5000/analyze-http', {
+            await fetch(`${BACKEND_URL}/analyze-http`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ csv_path: csvPath })

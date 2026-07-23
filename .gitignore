@@ -13,3 +13,28 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
+
+# Builds
+backend/build/
+backend/dist/
+electron/dist/
+*.spec
+
+# Vault data, keys and db files (Local only)
+backend/data/protected_files/
+backend/data/sensitive_files/
+backend/data/vault_backup/
+backend/data/vault_logs/
+backend/data/vault_key.key
+backend/data/vault_master.key
+backend/data/vault_metadata.db
+backend/data/recovery_status.json
+backend/data/vault_status.json
+backend/data/security_report.pdf
+backend/data/report_attack_dist.png
+
+# Other
+architecture.mmd
+implementation_plan.md
+task.md
+walkthrough.md

@@ -99,7 +99,17 @@ function SecurityOverview({ score = 85, status = "Protected" }) {
             </div>
 
             <button
-                onClick={() => window.open('http://localhost:5000/download-report', '_blank')}
+                onClick={() => {
+                    const getReportUrl = () => {
+                        if (window.electronAPI?.getBackendUrl) {
+                            return `${window.electronAPI.getBackendUrl()}/download-report`;
+                        }
+                        return window.location.hostname === 'localhost' || !window.location.hostname
+                            ? 'http://localhost:5000/download-report'
+                            : `http://${window.location.hostname}:5000/download-report`;
+                    };
+                    window.open(getReportUrl(), '_blank');
+                }}
                 className="scan-button"
                 style={{ marginTop: '10px', background: 'var(--secondary)' }}
             >

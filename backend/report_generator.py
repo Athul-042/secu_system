@@ -114,7 +114,7 @@ def _tbl_row(pdf, vals, highlight=False):
     pdf.ln()
 
 
-def generate_pdf_report(alerts, stats, model_info, behavior_stats=None,
+def generate_pdf_report(alerts, stats, model_info, behavior_stats=None, recent_packets=None,
                         output_path="data/security_report.pdf"):
 
     chart_paths = generate_charts(alerts, behavior_stats)
@@ -212,7 +212,15 @@ def generate_pdf_report(alerts, stats, model_info, behavior_stats=None,
         _tbl_row(pdf, [('Dominant Protocol', 80), (dominant_proto, 55), ('TCP/UDP Expected', 55)])
         pdf.ln(5)
 
+    # =============================================================
+    # SECTION 3 — Visual Traffic Analytics
+    # =============================================================
+    pdf.add_page()
+    pdf.section_title('3. Visual Traffic Analytics')
+    pdf.body_text('The graphical distributions below illustrate the proportion of attack categories detected and the corresponding service ports targeted during this analysis session.')
+    
     # Charts (side by side)
+    pdf.ln(10)
     chart_y = pdf.get_y()
     has_chart = False
     if 'attack_dist' in chart_paths and os.path.exists(chart_paths['attack_dist']):
@@ -222,13 +230,13 @@ def generate_pdf_report(alerts, stats, model_info, behavior_stats=None,
         pdf.image(chart_paths['port_usage'], x=108, y=chart_y, w=88)
         has_chart = True
     if has_chart:
-        pdf.set_y(chart_y + 75)
+        pdf.set_y(chart_y + 80)
     pdf.ln(5)
 
     # =============================================================
-    # SECTION 3 — Detection Engine Explanation
+    # SECTION 4 — Detection Engine Explanation
     # =============================================================
-    pdf.section_title('3. Detection Engine Explanation')
+    pdf.section_title('4. Detection Engine Explanation')
     acc = float(model_info.get('accuracy', 0.9842))
     engine_text = (
         'The system uses an XGBoost machine learning model (benchmarked accuracy: {:.2f}%) '
@@ -249,10 +257,10 @@ def generate_pdf_report(alerts, stats, model_info, behavior_stats=None,
     pdf.ln(8)
 
     # =============================================================
-    # SECTION 4 — Attack Classification & Incident Logs
+    # SECTION 5 — Attack Classification & Incident Logs
     # =============================================================
     pdf.add_page()
-    pdf.section_title('4. Attack Classification & Incident Logs')
+    pdf.section_title('5. Attack Classification & Incident Logs')
 
     attack_counter = Counter([a.get('attack_type', 'Low-Risk Activity')
                               for a in alerts if a.get('is_anomaly')])
@@ -315,10 +323,36 @@ def generate_pdf_report(alerts, stats, model_info, behavior_stats=None,
         pdf.body_text('No critical incidents logged. System remained in passive monitoring mode.')
 
     # =============================================================
-    # SECTION 5 — Recommendations & Conclusion
+    # SECTION 6 — Raw Traffic Sample (Trust & Transparency)
+    # =============================================================
+    if recent_packets:
+        pdf.ln(5)
+        pdf.section_title('6. Raw Traffic Sample (Transparency Log)')
+        pdf.body_text('The following table provides a raw snapshot of recent network packets processed by the system. This data is included to verify active monitoring and provide transparency into the traffic layer.')
+        
+        pdf.set_font('Arial', 'B', 10)
+        pdf.set_text_color(15, 23, 42)
+        pdf.cell(0, 8, 'Recent Network Packets (Last 5):', 0, 1)
+        
+        cols = [('Source IP', 50), ('Destination IP', 50), ('Protocol', 40), ('Size (Bytes)', 50)]
+        _tbl_header(pdf, cols)
+        
+        # Reverse to show newest first
+        for pkt in reversed(recent_packets):
+            row = [
+                (str(pkt.get('source', 'Unknown'))[:25], 50),
+                (str(pkt.get('destination', 'Unknown'))[:25], 50),
+                (str(pkt.get('protocol', 'TCP'))[:15], 40),
+                (str(pkt.get('size', 0)), 50)
+            ]
+            _tbl_row(pdf, row)
+        pdf.ln(5)
+
+    # =============================================================
+    # SECTION 7 — Recommendations & Conclusion
     # =============================================================
     pdf.ln(5)
-    pdf.section_title('5. Recommendations & Conclusion')
+    pdf.section_title('7. Recommendations & Conclusion')
 
     pdf.set_font('Arial', 'B', 10)
     pdf.set_text_color(15, 23, 42)

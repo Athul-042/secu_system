@@ -2,13 +2,30 @@ import { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 import './TrafficCapture.css';
 
-const socket = io('http://localhost:5000', {
-  reconnectionDelay: 1000,
-  reconnectionAttempts: Infinity,
-  transports: ['websocket', 'polling']
-});
+const getBackendUrl = () => {
+  if (window.electronAPI?.getBackendUrl) {
+    return window.electronAPI.getBackendUrl();
+  }
+  return window.location.hostname === 'localhost' || !window.location.hostname
+    ? 'http://localhost:5000'
+    : `http://${window.location.hostname}:5000`;
+};
+
+let globalSocket;
+const getSocket = () => {
+  if (!globalSocket) {
+    const backendUrl = getBackendUrl();
+    globalSocket = io(backendUrl, {
+      reconnectionDelay: 1000,
+      reconnectionAttempts: Infinity,
+      transports: ['websocket', 'polling']
+    });
+  }
+  return globalSocket;
+};
 
 function TrafficCapture({ onData, onStats, onAlert, background = false }) {
+  const socket = getSocket();
   const [trafficData, setTrafficData] = useState([]);
   const [isCapturing, setIsCapturing] = useState(background);
   const [isConnected, setIsConnected] = useState(false);

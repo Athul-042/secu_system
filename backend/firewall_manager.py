@@ -2,6 +2,10 @@ import subprocess
 import threading
 import time
 
+lock = threading.Lock()
+blocked_ips = set()
+
+
 # Safelist: IPs that should NEVER be blocked
 WHITELIST = [
     "127.0.0.1",        # Localhost

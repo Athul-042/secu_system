@@ -4,10 +4,13 @@ import TrafficMonitor from './TrafficMonitor';
 import WebsiteStatus from './WebsiteStatus';
 import ThreatMap from './ThreatMap';
 import AttackDistribution from './AttackDistribution';
+import AdaptiveProtection from './AdaptiveProtection';
+import VaultUploader from '../VaultUploader';
 import Navbar from '../Navbar';
 import './Dashboard.css';
 import { useData } from '../../contexts/DataContext';
 import { Link } from 'react-router-dom';
+
 
 function Dashboard() {
     const { trafficData, allAlerts, liveStats } = useData();
@@ -24,6 +27,7 @@ function Dashboard() {
                 {/* Left Column */}
                 <div style={{ gridColumn: 'span 1', display: 'flex', flexDirection: 'column', gap: '20px' }} className="left-panel">
                     <SecurityOverview score={score} status={status} />
+                    <VaultUploader />
                     <div className="dashboard-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
                         <h3 style={{ color: '#e2e8f0', marginBottom: '1rem' }}>Secure Data Vault</h3>
                         <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '1rem' }}>
@@ -49,7 +53,9 @@ function Dashboard() {
                 <div style={{ gridColumn: 'span 2', display: 'flex', flexDirection: 'column', gap: '20px' }} className="middle-panel">
                     <TrafficMonitor />
                     <WebsiteStatus trafficData={trafficData} />
+                    <AdaptiveProtection />
                 </div>
+
 
                 {/* Right Column */}
                 {/* Right Column */}

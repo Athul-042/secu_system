@@ -40,15 +40,15 @@ function AttackDistribution() {
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                         </Pie>
-                        <Tooltip 
-                            contentStyle={{ 
-                                backgroundColor: 'rgba(15, 23, 42, 0.9)', 
+                        <Tooltip
+                            contentStyle={{
+                                backgroundColor: 'rgba(15, 23, 42, 0.9)',
                                 border: '1px solid var(--glass-border)',
                                 borderRadius: '8px',
                                 fontSize: '0.8rem'
                             }}
                         />
-                        <Legend verticalAlign="bottom" height={36}/>
+                        <Legend verticalAlign="bottom" height={36} />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
