@@ -33,7 +33,8 @@ from protected_vault import bp as protected_vault_bp
 
 import socket as _socket
 
-app = Flask(__name__)
+dist_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'sceu_system', 'dist'))
+app = Flask(__name__, static_folder=dist_path, static_url_path='')
 app.config['SECRET_KEY'] = 'secret!'
 CUSTOM_MAX_MB = 100
 # Max request size (prevent uploads > 100 MB)
@@ -391,7 +392,12 @@ def packet_callback(packet_data):
 
 @app.route('/')
 def index():
-    return "Packet Sniffer Backend Running (ML Enabled)"
+    return app.send_static_file('index.html')
+
+@app.errorhandler(404)
+def not_found(e):
+    # Fallback to React index.html for client-side routing
+    return app.send_static_file('index.html')
 
 @app.route('/analyze-http', methods=['POST'])
 def analyze_http():

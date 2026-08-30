@@ -1,5 +1,10 @@
 flask
 flask-socketio
+flask-cors
 scapy
 eventlet
 cryptography
+pandas
+xgboost
+yara-python
+geoip2
